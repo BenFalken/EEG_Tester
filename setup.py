@@ -16,7 +16,7 @@ class Setup:
 	# Responsible for getting all desired edf files.
 	def get_files(self):
 		pathname = "YourPath/ProjectFolder/Data"
-		file_list = glob.glob(univ_path + "*.edf")
+		file_list = glob.glob(pathname + "*.edf")
 		file_list = [filename[len(pathname):len(filename)] for filename in file_list]
 
 		select_files = input('Pick one or more files to analyze (1 to ' + str(len(file_list)) + '): ' + str(file_list) + ' Return to complete. ')
