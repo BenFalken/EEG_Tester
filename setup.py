@@ -25,7 +25,7 @@ class Setup:
 		self.file_list = [filename[len(pathname):len(filename)] for filename in file_list]
 
 	def select_files(self):
-		select_files = input('Pick one or more files to analyze (1 to ' + str(len(self.file_list)) + '): ' + str(self.file_list) + ' Press c to complete. ')
+		select_files = input('Pick one or more files to analyze (1 to ' + str(len(self.file_list)) + '): ' + str(self.file_list) + ' Press c to complete, return to copy eveyrthing. ')
 
 		while True:
 			if select_files == 'c':
@@ -45,10 +45,10 @@ class Setup:
 					break
 			except:
 				print('Your selection was invalid.')
-			select_files = input('Pick one or more files to analyze (1 to ' + str(len(self.file_list)) + '): ' + str(self.file_list) + ' Return to complete. ')
+			select_files = input('Pick one or more files to analyze (1 to ' + str(len(self.file_list)) + '): ' + str(self.file_list) + ' Press c to complete, return to copy eveyrthing. ')
 	# Responsible for getting the desired edf categories (brain regions).
 	def select_categs(self):
-		col = input('Which columns would you like to record? Select 1-' + str(len(ALL_CATEGS)) + '. Return to end selection. ')
+		col = input('Which columns would you like to record? Select 1-' + str(len(ALL_CATEGS)) + '. (NOTE: Only goes up to 5) Press return to end selection. ')
 		while col != '':
 			if col == '':
 				break
