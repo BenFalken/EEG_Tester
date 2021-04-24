@@ -4,39 +4,50 @@ from const import *
 import glob
 
 class Setup:
-	def __init__(self):
+	def __init__(self, params):
+		self.params = params
 		self.filenames = []
 		self.categ_names = []
 		self.categs = {}
 		self.files_with_categs = {}
 	# Self explanatory.
 	def run(self):
-		self.get_files()
-		self.get_categs()
+		if self.params == None:
+			self.get_files()
+		else:
+			self.file_list = [name + ".edf" for name in self.params]
+		self.select_files()
+		self.select_categs()
 	# Responsible for getting all desired edf files.
 	def get_files(self):
-		pathname = "YourPath/ProjectFolder/Data"
+		pathname = "/Users/benfalken/Desktop/BigBrain/Data/"
 		file_list = glob.glob(pathname + "*.edf")
-		file_list = [filename[len(pathname):len(filename)] for filename in file_list]
+		self.file_list = [filename[len(pathname):len(filename)] for filename in file_list]
 
-		select_files = input('Pick one or more files to analyze (1 to ' + str(len(file_list)) + '): ' + str(file_list) + ' Return to complete. ')
+	def select_files(self):
+		select_files = input('Pick one or more files to analyze (1 to ' + str(len(self.file_list)) + '): ' + str(self.file_list) + ' Press c to complete. ')
 
-		while select_files != '':
+		while True:
+			if select_files == 'c':
+				break
 			if select_files == '':
+				for name in self.file_list:
+					self.filenames.append(name[:-4])
+					self.files_with_categs[name[:-4]] = {}
 				break
 			try:
 				index = int(select_files) - 1
-				name = file_list[index]
+				name = self.file_list[index]
 				self.filenames.append(name[:-4])
 				self.files_with_categs[name[:-4]] = {}
-				del file_list[index]
-				if len(file_list) == 0:
+				del self.file_list[index]
+				if len(self.file_list) == 0:
 					break
 			except:
 				print('Your selection was invalid.')
-			select_files = input('Pick one or more files to analyze (1 to ' + str(len(file_list)) + '): ' + str(file_list) + ' Return to complete. ')
+			select_files = input('Pick one or more files to analyze (1 to ' + str(len(self.file_list)) + '): ' + str(self.file_list) + ' Return to complete. ')
 	# Responsible for getting the desired edf categories (brain regions).
-	def get_categs(self):
+	def select_categs(self):
 		col = input('Which columns would you like to record? Select 1-' + str(len(ALL_CATEGS)) + '. Return to end selection. ')
 		while col != '':
 			if col == '':
