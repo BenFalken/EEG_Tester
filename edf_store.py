@@ -1,3 +1,5 @@
+## Firebase interface
+
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
@@ -10,18 +12,15 @@ class EDF_Store:
 		self.fetched_data = {}
 		self.test_user_ids = []
 		self.test_users = []
-
 		cred = credentials.Certificate('/Users/benfalken/Desktop/eeg-files-firebase-adminsdk-qhviy-20a3bd6b70.json')
-		# Initialize the app with a service account, granting admin privileges
 		firebase_admin.initialize_app(cred, {
 		    'databaseURL': 'https://eeg-files.firebaseio.com'
 		})
 		self.db = firestore.client()
 		self.test_users_db = self.db.collection(u'test-users')
-
-	def run(self):
+	# Record all the selected files in firebase
+	def record_data(self):
 		for user_id in self.filenames:
-			#truncated_id = user_id[5:]
 			user = self.test_users_db.document(user_id)
 			all_data = {}
 			for categ in self.categ_names:
@@ -32,11 +31,9 @@ class EDF_Store:
 					data[str(x[i])] = y[i]
 				all_data[categ] = data
 			user.set(all_data)
+	# Fetch all files from firebase
 	def fetch_data(self):
 		self.test_users_stream = self.test_users_db.stream()
 		for user in self.test_users_stream:
 			self.test_user_ids.append(user.id)
 			self.test_users.append(user.to_dict())
-		#self.test_users = [user.to_dict() for user in self.test_users_stream]
-		#self.test_user_ids = [user.id for user in self.test_users_stream]
-		#print(self.test_user_ids)
